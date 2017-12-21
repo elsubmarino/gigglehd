@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gigglehd.persistence.CategoryMapper">
+	<select id="getList" resultType="SubCategory" parameterType="string">
+		select sub.name as name,sub.content as content from tbl_bigcategory as
+		big right join tbl_subcategory as sub on big.num = sub.rootNum
+		 or big.order = sub.rootOrder 
+		 where big.name=#{mainCategory} order by sequence asc;
+	</select>
+	<select id="getMainCategories" resultType="BigCategory" parameterType="string">
+		select * from
+		tbl_bigcategory 
+		where name = #{name}
+	</select>
+
+	<select id="getListForBigCategory" resultType="bigCategory">
+		select * from tbl_bigcategory order by `order` asc, num asc;
+	</select>
+	
+	<select id="getSubcategoriesByBigcategory" resultType="SubCategory">
+	select * from tbl_subcategory where rootNum=(select num from tbl_bigcategory where name=#{mainCategory});
+	</select>
+	
+	
+</mapper>

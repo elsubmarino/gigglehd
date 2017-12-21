@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gigglehd.persistence.BoardMapper">
+	<sql id="where">
+		<where>
+			<if test="mainCategory != null and !mainCategory.toString().equals('')">
+				mainCategory=#{mainCategory}
+				
+			</if>
+
+			<if test="subCategory != null and !subCategory.toString().equals('')">
+				and subCategory=#{subCategory}
+			</if>
+			<if test="keywords != null and !keywords.toString().equals('')">
+				<if test="searchType.toString() == 'all'">
+					title like concat('%',#{keywords},'%')
+					or content
+					like concat ('%',#{keywords},'%')
+				</if>
+			</if>
+		</where>
+
+	</sql>
+	<select id="getList" resultType="Board">
+		select @ROWNUM:=@ROWNUM+1 as
+		rownum,num,writer,lvl,groupNum,(select lvl from user inner join tbl_role_lvl on user.points between  tbl_role_lvl.min_points and tbl_role_lvl.max_points where username=writer) as lvl,title,content,hit,date_format(`date`,"%Y-%m-%d") as date,subCategory,mainCategory,(select
+		count(*) from tbl_reply where root_num=tbl_board.num) as replyCount,
+		(select tbl_subcategory.name from tbl_subcategory inner join tbl_bigcategory on tbl_subcategory.rootNum = tbl_bigcategory.num where tbl_subcategory.content=tbl_board.subcategory and tbl_bigCategory.name=tbl_board.mainCategory) as menuName 
+		<if test="mainCategory.toString().equals('picture')">
+			,(select url from tbl_board_pictures where rootNum=tbl_board.num order by num asc limit 1 ) as url		
+		</if>
+		from
+		tbl_board, (SELECT @ROWNUM:=0) TMP
+		<include refid="where" />
+		order by groupNum desc, sequence asc
+		limit #{startPage},#{perPageNum}
+	</select>
+	
+	<select id="getUltimateSearch" resultType="Board">
+	select num,title,content,subCategory,mainCategory from tbl_board where title like concat('%',#{keywords},'%')
+					or content
+					like concat ('%',#{keywords},'%')
+					order by num desc
+					limit #{startPage},#{perPageNum}
+	</select>
+	
+	<select id="getCountForUltimateSearch" resultType="int">
+	select count(*) from tbl_board 
+	 where title like concat('%',#{keywords},'%')
+					or content
+					like concat ('%',#{keywords},'%')
+	</select>
+
+	<select id="getCount" resultType="int">
+		select count(*) from tbl_board
+		<include refid="where" />
+	</select>
+	
+	
+
+	<select id="getOne" resultType="Board">
+		select num,writer,title,content,hit,`date` as dateTime,subcategory,maincategory,sequence,lvl,groupNum from tbl_board where
+		num=#{num}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="num" parameterType="Board">
+		insert into tbl_board(writer,title,content,mainCategory,subCategory,lvl,sequence,groupNum)
+		values(#{writer},#{title},#{content},#{mainCategory},#{subCategory},#{lvl},#{sequence},#{groupNum})
+	</insert>
+	
+	<update id="updateGroupNum">
+	update tbl_board set groupNum=#{groupNum} where num=#{num}
+	</update>
+
+	<delete id="delete">
+		delete from tbl_board where num=#{num}
+	</delete>
+	<update id="modify">
+		update tbl_board set
+		title=#{title},content=#{content},UpdateDatetime=now() where num=#{num}
+	</update>
+
+	<update id="updateHit">
+		update tbl_board set hit=hit+1 where num=#{num}
+	</update>
+	
+	<update id="updateDelete">
+		update tbl_board set updateDelete=updateDelete+1 where num=#{num}
+	</update>
+	
+	<update id="updateRecommendation">
+		update tbl_board set recommendation=recommendation+1 where num=#{num}
+	</update>
+	
+	<update id="updateSequence">
+		update tbl_board set sequence=sequence+1 where groupNum=#{groupNum} and sequence>#{sequence}
+	</update>
+	
+	<select id="getUpdateDeleteCount" resultType="int">
+		select updateDelete from tbl_board where num=#{num}
+	</select>
+	<select id="getUpdateRecommendationCount" resultType="int">
+		select recommendation from tbl_board where num=#{num}
+	</select>
+	
+	
+	
+	
+		<select id="getListByPopularity" resultType="Board">
+		select * from tbl_board where `date` >= #{date} and maincategory = some(select name from tbl_bigcategory where superbase=#{mainCategory})
+		order by hit desc, num desc
+		limit 0,#{perPageNum}
+	</select>
+	
+	
+</mapper>
