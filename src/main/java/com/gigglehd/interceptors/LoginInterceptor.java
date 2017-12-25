@@ -1,4 +1,4 @@
-package com.gigglehd;
+package com.gigglehd.interceptors;
 
 import java.io.PrintWriter;
 
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gigglehd.domain.User;
 
 @Component
-class LoginInterceptor implements HandlerInterceptor{
+public class LoginInterceptor implements HandlerInterceptor{
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

@@ -2,23 +2,23 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gigglehd.persistence.ReplyMapper">
+<mapper namespace="com.gigglehd.persistence.ReplyRepository">
 	<insert id="insert" useGeneratedKeys="true" keyProperty="num"
-		parameterType="Reply">
+		parameterType="com.gigglehd.domain.Reply">
 		insert into
 		tbl_reply(writer,content,group_num,lvl,sequence,root_num,date)
 		values(#{writer},#{content},#{group_num},#{lvl},#{sequence},#{root_num},now())
 	</insert>
-	<update id="updateGroupNum" parameterType="int">
+	<update id="updateGroupNum" parameterType="long">
 		update tbl_reply set
-		groupNum=#{num} where num=#{num}
+		group_num=#{num} where num=#{num}
 	</update>
 	<update id="updateSequence">
 		update tbl_reply set sequence=sequence+1 where
 		sequence >= #{sequence} and
 		group_num=#{group_num}
 	</update>
-	<select id="getList" resultType="Reply">
+	<select id="getList" resultType="com.gigglehd.domain.Reply">
 		select * from tbl_reply where
 		root_num=#{num} order by group_num desc, sequence asc
 	</select>
@@ -27,7 +27,7 @@
 		select count(*) from tbl_reply where root_num=#{num}
 	</select>
 
-	<select id="getListBy30" resultType="Reply">
-		select num,writer,content,root_num,group_num,lvl,sequence from tbl_reply order by `date` desc limit 0,30 
+	<select id="getListBy30" resultType="com.gigglehd.domain.Reply">
+		select num,RPAD(LEFT(writer,3),8,'*') as writer,content,root_num,group_num,lvl,sequence from tbl_reply order by `date` desc limit 0,30 
 	</select>
 </mapper>

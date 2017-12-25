@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:forEach items="${list }" var="item">
-<div class="row"><a href="/board/read?num=${item.num}&mainCategory=${item.mainCategory}&subCategory=${item.subCategory}">${item.title }</a></div>
+<div class="row"><a href="/board/read?num=${item.num}&maincategory=${item.maincategory}&subcategory=${item.subcategory}">${item.title }</a></div>
 <div class="row"></div>
 <div class="row">${item.content }</div>
 </c:forEach>

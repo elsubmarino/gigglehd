@@ -29,7 +29,7 @@ public @Data class PageMaker {
 	}
 	
 	public String makeQuery(int page) {
-		UriComponents uri=UriComponentsBuilder.newInstance().queryParam("page", page).queryParam("keywords",cri.getKeywords()).queryParam("searchType", cri.getSearchType()).queryParam("subCategory", cri.getSubCategory()).queryParam("mainCategory", cri.getMainCategory()).build();
+		UriComponents uri=UriComponentsBuilder.newInstance().queryParam("page", page).queryParam("keywords",cri.getKeywords()).queryParam("searchType", cri.getSearchType()).queryParam("subcategory", cri.getSubcategory()).queryParam("maincategory", cri.getMaincategory()).build();
 		return uri.toString();
 	}
 	

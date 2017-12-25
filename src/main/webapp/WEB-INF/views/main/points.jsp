@@ -12,7 +12,7 @@
 						<td>글</td>
 						<td>댓글</td>
 					</tr>
-					<c:forEach items="${mainCategory }" var="item">
+					<c:forEach items="${maincategory }" var="item">
 						<tr>
 							<td>${item.content }</td>
 							<td>10</td>

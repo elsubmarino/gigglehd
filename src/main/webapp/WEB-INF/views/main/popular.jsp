@@ -6,7 +6,7 @@
 	<table>
 		<c:forEach items="${forumsWeekly }" var="item">
 			<tr>
-				<td>${item.mainCategory }</td>
+				<td>${item.maincategory }</td>
 
 				<td>${item.title }</td>
 				<td>${item.writer }</td>
@@ -22,7 +22,7 @@
 	<table>
 		<c:forEach items="${communityWeekly }" var="item">
 			<tr>
-				<td>${item.mainCategory }</td>
+				<td>${item.maincategory }</td>
 				<td>${item.title }</td>
 				<td>${item.writer }</td>
 				<td>${item.date }</td>
@@ -36,7 +36,7 @@
 	<table>
 		<c:forEach items="${forumsMonthly }" var="item">
 			<tr>
-				<td>${item.mainCategory }</td>
+				<td>${item.maincategory }</td>
 
 				<td>${item.title }</td>
 				<td>${item.writer }</td>
@@ -51,7 +51,7 @@
 	<table>
 		<c:forEach items="${communityWeekly }" var="item">
 			<tr>
-				<td>${item.mainCategory }</td>
+				<td>${item.maincategory }</td>
 
 				<td>${item.title }</td>
 				<td>${item.writer }</td>

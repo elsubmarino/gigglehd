@@ -2,40 +2,40 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gigglehd.persistence.UserMapper">
-	<select id="getUser" resultType="User" parameterType="User">
-	select username,passwords,points,lastlog from user where username=#{username} and passwords=sha2(#{passwords},256)
+<mapper namespace="com.gigglehd.persistence.UserRepository">
+	<select id="getUser" resultType="com.gigglehd.domain.User" parameterType="com.gigglehd.domain.User">
+	select username,passwords,points,lastlog from tbl_user where username=#{username} and passwords=sha2(#{passwords},256)
 	</select>
 	
 	<insert id="insert">
-	insert into user(username,passwords) values(#{username},sha2(#{passwords},256))
+	insert into tbl_user(username,passwords) values(#{username},sha2(#{passwords},256))
 	</insert>
 	
 	<update id="updatePoints">
-	update user set points=points+#{points} where username=#{username}
+	update tbl_user set points=points+#{points} where username=#{username}
 	</update>
 	
 	<update id="updateLastLog">
-	update user set lastlog=now() where username=#{usernasme}
+	update tbl_user set lastlog=now() where username=#{usernasme}
 	</update>
 	
 	<select id="getLastLog" resultType="java.time.LocalDate">
-	select lastlog from user where username=#{username}
+	select lastlog from tbl_user where username=#{username}
 	</select>
 	
-	<select id="getListByPoints" resultType="User">
-	select user.username,user.points,tbl_role_lvl.lvl from user join tbl_role_lvl on user.points between tbl_role_lvl.min_points and tbl_role_lvl.max_points
+	<select id="getListByPoints" resultType="com.gigglehd.domain.User">
+	select user.username,user.points,tbl_role_lvl.lvl from tbl_user join tbl_role_lvl on user.points between tbl_role_lvl.min_points and tbl_role_lvl.max_points
 	</select>
 	
 	<select id="getId" resultType="int">
-	select count(*) from user where username=#{username}
+	select count(*) from tbl_user where username=#{username}
 	</select>
 	
 	<update id="updateSession">
-	update user set sessionId=#{sessionId}, sessionTimeout=#{sessionTimeout} where username=#{username} 
+	update tbl_user set sessionId=#{sessionId}, sessionTimeout=#{sessionTimeout} where username=#{username} 
 	</update>
 	
-	<select id="getSession" resultType="User">
-	select username,sessionId,sessionTimeout from user where sessionId=#{sessionId}
+	<select id="getSession" resultType="com.gigglehd.domain.User">
+	select username,sessionId,sessionTimeout from tbl_user where sessionId=#{sessionId}
 	</select>
 </mapper>

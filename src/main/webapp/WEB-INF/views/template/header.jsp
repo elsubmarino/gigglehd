@@ -62,22 +62,7 @@ border-color:black;
 				<li><a href="${item.link }">${item.content }</a></li>
 				<c:set var="superbase" value="${item.superbase}" />
 				</c:forEach>
-			</ul> <!-- 	<li class="dropdown"><a href="#" data-toggle="dropdown">기글하드웨어</a>
-				<ul class="dropdown-menu">
-					<li><a href="#">인기글</a></li>
-					<li><a href="/board/list?mainCategory=news">주간 / 국내뉴스</a></li>
-					<li><a href="/board/list?mainCategory=reviews">리뷰 / 사용기</a></li>
-					<li><a href="/board/list?mainCategory=ads">홍보 / 필테</a></li>
-					<li><a href="/points">포인트 랭킹</a></li>
-				</ul></li>
-			<li class="dropdown"><a href="#" data-toggle="dropdown">포럼</a>
-				<ul class="dropdown-menu">
-					<li><a href="#">컴퓨터 / 하드웨어</a></li>
-				</ul></li>
-			<li class="dropdown"><a href="#" data-toggle="dropdown">커뮤니티</a>
-				<ul class="dropdown-menu">
-					<li><a href="#">커뮤니티 게시판</a></li>
-				</ul></li> -->
+			</ul>
 			</ul>
 			<div class="navbar-form navbar-right">
 				<form id="ultimateSearch" action="/board/search">
@@ -112,10 +97,13 @@ border-color:black;
 			$("#login").on("click", function(evt) {
 				evt.preventDefault();
 				if (!$("[name=username]").val()) {
-					alert("사용자 이름을 입력하세요!");
+					//alert("사용자 이름을 입력하세요!");
+					$("#alertContent").text("사용자 이름을 입력하세요!");
+					$("#myModal").modal("toggle");
 					return;
 				} else if (!$("[name=passwords]").val()) {
-					alert("패스워드를 입력하세요!");
+					$("#alertContent").text("패스워드를 입력하세요!");
+					$("#myModal").modal("toggle");
 					return;
 				}
 				$.ajax({
@@ -124,7 +112,8 @@ border-color:black;
 					type : 'post',
 					success : function(res) {
 						if (res.status == "fail") {
-							alert("로그인이 실패하였습니디!");
+							$("#alertContent").text("로그인 실패하였습니다!");
+							$("#myModal").modal("toggle");
 							return;
 						}
 						location.reload();

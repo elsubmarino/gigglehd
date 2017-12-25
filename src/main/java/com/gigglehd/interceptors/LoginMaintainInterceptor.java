@@ -14,12 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import com.gigglehd.domain.User;
-import com.gigglehd.persistence.UserMapper;
+import com.gigglehd.persistence.UserRepository;
 
 @Component
 public class LoginMaintainInterceptor implements HandlerInterceptor{
 	@Autowired
-	UserMapper userMapper;
+	UserRepository userRepository;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -27,7 +27,8 @@ public class LoginMaintainInterceptor implements HandlerInterceptor{
 		Cookie cookie=WebUtils.getCookie(request, "id");
 		if(cookie!=null) {
 			String sessId=cookie.getValue();
-			User dto=userMapper.getSession(sessId);
+			//User dto=userRepository.getSession(sessId);
+			User dto=userRepository.findUsernameAndSessionidAndSessintimeoutBySessionid(sessId);
 			LocalDateTime ldt=LocalDateTime.now();
 			LocalDateTime ldt2=dto.getSessiontimeout().toLocalDateTime();
 			if(!ldt2.isBefore(ldt)) {

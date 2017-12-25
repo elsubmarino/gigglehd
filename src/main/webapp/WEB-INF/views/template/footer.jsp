@@ -12,3 +12,11 @@
 	권리 침해, 사이트 운영, 관리, 제휴와 광고 관련 문의는 이메일로 보내주세요. 관리자 이메일
 	jisungyeah@gmail.com</div>
 </div>
+<div class="modal fade in" id="myModal">
+	<div class="modal-dialog">
+		<div class="alert alert-info">
+			<span id="alertContent"></span><span class="close"
+				data-dismiss="modal">X</span>
+		</div>
+	</div>
+</div>

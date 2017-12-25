@@ -1,24 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div class="row">${mainCategory.content}: ${mainCategory.details }
+<div class="row">${maincategory.content}: ${maincategory.details }
 </div>
 <div class="row">
 	<ul class="nav nav-tabs">
-		<li ${param.subCategory eq null ? 'class=active':'' }><a
-			href="/board/list?mainCategory=${pageMaker.cri.mainCategory }">전체</a></li>
-		<c:forEach items="${subCategory }" var="item">
-			<li ${item.content eq param.subCategory?"class='active'":"" }><a
-				href="/board/list?mainCategory=${pageMaker.cri.mainCategory }&subCategory=${item.content}">${item.name }</a>
+		<li ${param.subcategory eq null ? 'class=active':'' }><a
+			href="/board/list?maincategory=${pageMaker.cri.maincategory }">전체</a></li>
+		<c:forEach items="${subcategory }" var="item">
+			<li ${item.content eq param.subcategory?"class='active'":"" }><a
+				href="/board/list?maincategory=${pageMaker.cri.maincategory }&subcategory=${item.content}">${item.name }</a>
 		</c:forEach>
-		<%-- 	<li ${param.subCategory eq null ? 'class=active':'' }><a
-			href="/board/list">전체</a></li>
-		<li ${param.subCategory eq 'nation'?'class=active':'' }><a
-			href="/board/list?mainCategory=news&subCategory=nation">국내 뉴스</a></li>
-		<li ${param.subCategory eq 'event'?'class=active':'' }><a
-			href="/board/list?mainCategory=news&subCategory=event">이벤트</a></li>
-		<li ${param.subCategory eq 'weekly'?'class=active':'' }><a
-			href="/board/list?mainCategory=news&subCategory=weekly">주간 뉴스</a></li> --%>
+	
 	</ul>
 </div>
 <div class="row">
@@ -33,9 +26,9 @@
 		</tr>
 		<c:forEach items="${list }" var="item">
 			<tr>
-			<td>${item.num }</td>
+			<td>${item.rownum }</td>
 			<td>${item.menuName }</td>
-			<td style="padding-left:${item.lvl*5}px"><a href="/board/read${pageMaker.makeQuery(pageMaker.cri.page) }&groupNum=${item.groupNum}&num=${item.num}">${item.title}</a></td>
+			<td style="padding-left:${item.lvl*5}px"><c:if test="${item.date ge dateNow }"><span class="badge">New</span></c:if><a href="/board/read${pageMaker.makeQuery(pageMaker.cri.page) }&group_num=${item.group_num}&num=${item.num}">${item.title}</a></td>
 			<td>${item.writer }</td>
 			<td>${item.date }</td>
 			<td>${item.hit }</td>
@@ -46,14 +39,17 @@
 <div class="row">
 	<a href="#">목록</a>
 	<form method="get" action="/board/list" id="searchForm">
-		<input type="hidden" name="subCategory"
-			value="${pageMaker.cri.subCategory }" /> <input type="text"
+		<input type="hidden" name="subcategory"
+			value="${pageMaker.cri.subcategory }" /> <input type="text"
 			name="keywords"><select name="searchType"><option
 				value="all">제목+내용</option>
 			<option>제목</option></select>
 	</form>
-	<a href="#" id="search">검색</a> <a
+	<a href="#" id="search">검색</a> 
+	<c:if test="${sessionScope.user ne null }">
+	<a
 		href="/board/write${pageMaker.makeQuery(pageMaker.cri.page) }">쓰기</a>
+	</c:if>
 </div>
 <div class="row">
 

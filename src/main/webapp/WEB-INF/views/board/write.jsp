@@ -4,10 +4,10 @@
 <script src="//cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
 <form method="POST" id="form">
 <input type="hidden" name="writer" value="haha"/>
-<input type="hidden" name="mainCategory" value="${pageMaker.cri.mainCategory }"/>
-<input type="hidden" name="subCategory" value=""/>
+<input type="hidden" name="maincategory" value="${pageMaker.cri.maincategory }"/>
+<input type="hidden" name="subcategory" value=""/>
 <c:if test="${param.mode eq 'reply' }">
-<input type="hidden" name="groupNum" value="${param.groupNum }"/>
+<input type="hidden" name="group_num" value="${param.group_num }"/>
 <input type="hidden" name="sequence" value="${param.sequence }"/>
 <input type="hidden" name="lvl" value="${param.lvl+1 }"/>
 </c:if>
@@ -15,7 +15,7 @@
 	<div class="row">
 		<select id="subcategory"><option>분류</option>
 		<c:forEach items="${list }" var="item">
-		<option value="${item.content }">${item.name }</option>
+		<option value="${item.content }" ${item.content eq dto.subcategory?"selected":"" }>${item.name }</option>
 		</c:forEach>
 		</select><input type="text" name="title" value="${mode eq 'modify' ? dto.title:'' }">
 	</div>
@@ -41,7 +41,7 @@ $(function(){
 			$("#form").attr("action","/board/modify"+search);
 		}
 		var subcategory=$("#subcategory").val();
-		$("[name=subCategory]").val(subcategory);
+		$("[name=subcategory]").val(subcategory);
 		$("#form").submit();
 	});
 });

@@ -17,9 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.gigglehd.persistence.BoardMapper;
-import com.gigglehd.persistence.CategoryMapper;
-import com.gigglehd.persistence.UserMapper;
+import com.gigglehd.persistence.BoardRepository;
+import com.gigglehd.persistence.BigCategoryRepository;
+import com.gigglehd.persistence.UserRepository;
 import com.gigglehd.util.Criteria;
 
 @Controller
@@ -28,13 +28,13 @@ public class HomeController {
 	ServletContext servletContext;
 
 	@Autowired
-	CategoryMapper categoryMapper;
+	BigCategoryRepository bigCategoryRepository;
 
 	@Autowired
-	UserMapper userMapper;
+	UserRepository userRepository;
 
 	@Autowired
-	BoardMapper boardMapper;
+	BoardRepository boardRepository;
 
 	@RequestMapping("/")
 	public String home(Locale locale, Model model) {
@@ -50,8 +50,12 @@ public class HomeController {
 
 	@RequestMapping("/points")
 	public String points(Model model) {
-		model.addAttribute("ranking", userMapper.getListByPoints());
-		model.addAttribute("mainCategory", categoryMapper.getMainCategories(null));
+//		model.addAttribute("ranking", userRepository.getListByPoints());
+		//model.addAttribute("ranking", userRepository.findUsernameAndPointsAndLvl());
+		
+//		model.addAttribute("maincategory", categoryMapper.getMainCategories(null));
+		model.addAttribute("maincategory", bigCategoryRepository.findAll());
+	
 
 		return "/main/points";
 	}
@@ -59,19 +63,19 @@ public class HomeController {
 	@RequestMapping("/popular")
 	public String popular(Model model) {
 		Map<String, Object> hashMap = new HashMap<>();
-		hashMap.put("mainCategory", "포럼");
+		hashMap.put("maincategory", "포럼");
 		LocalDateTime ld = LocalDateTime.now();
 		hashMap.put("date", Timestamp.valueOf(ld.plus(-7, ChronoUnit.DAYS)));
 		hashMap.put("perPageNum", 20);
-		model.addAttribute("forumsWeekly", boardMapper.getListByPopularity(hashMap));
+		model.addAttribute("forumsWeekly", boardRepository.getListByPopularity(hashMap));
 		hashMap.put("date", Timestamp.valueOf(ld.plus(-30, ChronoUnit.DAYS)));
-		model.addAttribute("forumsMonthly", boardMapper.getListByPopularity(hashMap));
-		hashMap.put("mainCategory", "커뮤니티");
+		model.addAttribute("forumsMonthly", boardRepository.getListByPopularity(hashMap));
+		hashMap.put("maincategory", "커뮤니티");
 		hashMap.put("date", Timestamp.valueOf(ld.plus(-7, ChronoUnit.DAYS)));
 		hashMap.put("perPageNum", 10);
-		model.addAttribute("communityWeekly", boardMapper.getListByPopularity(hashMap));
+		model.addAttribute("communityWeekly", boardRepository.getListByPopularity(hashMap));
 		hashMap.put("date", Timestamp.valueOf(ld.plus(-30, ChronoUnit.DAYS)));
-		model.addAttribute("comunityMonthly", boardMapper.getListByPopularity(hashMap));
+		model.addAttribute("comunityMonthly", boardRepository.getListByPopularity(hashMap));
 
 		return "/main/popular";
 	}

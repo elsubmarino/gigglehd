@@ -2,25 +2,25 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gigglehd.persistence.CategoryMapper">
-	<select id="getList" resultType="SubCategory" parameterType="string">
+<mapper namespace="com.gigglehd.persistence.CategoryRepository">
+	<select id="getList" resultType="com.gigglehd.domain.SubCategory" parameterType="string">
 		select sub.name as name,sub.content as content from tbl_bigcategory as
-		big right join tbl_subcategory as sub on big.num = sub.rootNum
+		big right join tbl_subcategory as sub on big.num = sub.root_num
 		 or big.order = sub.rootOrder 
-		 where big.name=#{mainCategory} order by sequence asc;
+		 where big.name=#{maincategory} order by sub.num asc;
 	</select>
-	<select id="getMainCategories" resultType="BigCategory" parameterType="string">
+	<select id="getMainCategories" resultType="com.gigglehd.domain.BigCategory" parameterType="string">
 		select * from
 		tbl_bigcategory 
 		where name = #{name}
 	</select>
 
-	<select id="getListForBigCategory" resultType="bigCategory">
+	<select id="getListForBigCategory" resultType="com.gigglehd.domain.BigCategory">
 		select * from tbl_bigcategory order by `order` asc, num asc;
 	</select>
 	
-	<select id="getSubcategoriesByBigcategory" resultType="SubCategory">
-	select * from tbl_subcategory where rootNum=(select num from tbl_bigcategory where name=#{mainCategory});
+	<select id="getSubcategoriesByBigcategory" resultType="com.gigglehd.domain.SubCategory">
+	select * from tbl_subcategory where root_num=(select num from tbl_bigcategory where name=#{maincategory});
 	</select>
 	
 	

@@ -2,8 +2,12 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.gigglehd.persistence.BoardPicturesMapper">
-	<select id="getPicturesByRootNum" resultType="BoardPictures">
-		select * from tbl_board_pictures where rootNum=#{rootNum}
+<mapper namespace="com.gigglehd.persistence.BoardPicturesRepository">
+	<select id="getPicturesByRootNum" resultType="com.gigglehd.domain.BoardPictures">
+		select * from tbl_board_pictures where root_num=#{root_num}
 	</select>
+	
+	<insert id="insert">
+		insert into tbl_board_pictures(url,root_num) values(#{url},#{root_num})
+	</insert>
 </mapper>

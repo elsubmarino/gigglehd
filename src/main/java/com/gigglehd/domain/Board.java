@@ -9,7 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,27 +23,33 @@ import lombok.Data;
 @Table(name="tbl_board")
 public @Data class Board {
 	@Transient
-	int rownum;
+	long rownum;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	int num;
+	long num;
+	@NotNull
 	String writer;
+	@NotNull
 	String title;
+	@NotNull
 	String content;
-	int hit;
+	long hit;
 	@Transient
 	LocalDateTime datetime;
 	LocalDate date;
 	@UpdateTimestamp
 	Timestamp updatedatetime;
+	@NotNull
 	String subcategory;
+	@NotNull
 	String maincategory;
 	@Transient
-	int replycount;
+	long replycount;
 	@Transient
-	int groupnum;
+	long group_num;
 	int sequence;
 	int lvl;
+	
 	
 	
 	
